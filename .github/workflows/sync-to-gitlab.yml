@@ -1,0 +1,30 @@
+name: Sync to GitLab
+
+on:
+  push:
+    branches:
+      - master  # Hoặc branch mà bạn muốn đồng bộ hóa
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Đảm bảo lấy toàn bộ lịch sử commit
+
+      - name: Setup Git
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+
+      - name: Add GitLab Remote
+        run: git remote add gitlab https://git.dkviet.com/vinhhung1/test.git
+
+      - name: Push to GitLab
+        env:
+          GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
+        run: |
+           git push --mirror https://gitlab-ci-token:${{ secrets.GITLAB_TOKEN }}@git.dkviet.com/vinhhung1/test.git
