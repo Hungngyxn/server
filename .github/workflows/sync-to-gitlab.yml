@@ -3,7 +3,9 @@ name: Sync to GitLab
 on:
   push:
     branches:
-      - master  # Hoặc branch mà bạn muốn đồng bộ hóa
+      - master
+    schedule:
+      - cron: '*/5 * * * *'
 
 jobs:
   sync:
